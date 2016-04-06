@@ -7,7 +7,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.alejandrosanchezaristizabal.pushnotificationsprototype.services.RegistrationIntentService;
+import com.example.alejandrosanchezaristizabal.pushnotificationsprototype.utils.PreferencesHelper;
 import com.example.alejandrosanchezaristizabal.pushnotificationsprototype.utils.RequestQueueSingletonHelper;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -15,7 +17,7 @@ import org.json.JSONObject;
  */
 public class HttpRequestsClient {
 
-  private static final String TAG = "HttpReqManager";
+  private static final String TAG = "HttpReqClient";
 
   private int reqMethod;
   private String url;
@@ -37,7 +39,14 @@ public class HttpRequestsClient {
       new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject response) {
-          RegistrationIntentService.setSharedPreferences(context, true);
+          String userId = null;
+          try {
+            userId = String.valueOf(response.getLong(PreferencesHelper.ID));
+          }
+          catch (JSONException e) {
+            e.printStackTrace();
+          }
+          RegistrationIntentService.setSharedPreferences(context, true, userId);
           Log.i(TAG, "HTTP-Response: " + response.toString());
           RegistrationIntentService.notifyResultToIntentServicesReceiver(context);
         }
@@ -45,7 +54,7 @@ public class HttpRequestsClient {
       new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-          RegistrationIntentService.setSharedPreferences(context, false);
+          RegistrationIntentService.setSharedPreferences(context, false, null);
           Log.i(TAG, "Failed getting HTTP-Response");
           error.printStackTrace();
           RegistrationIntentService.notifyResultToIntentServicesReceiver(context);
@@ -61,5 +70,4 @@ public class HttpRequestsClient {
   public void addRequestToQueue(Request request) {
     RequestQueueSingletonHelper.getInstance(context).addToRequestQueue(request);
   }
-
 }

@@ -2,6 +2,7 @@ package com.example.alejandrosanchezaristizabal.pushnotificationsprototype.servi
 
 import android.content.Intent;
 import android.util.Log;
+import com.example.alejandrosanchezaristizabal.pushnotificationsprototype.utils.PreferencesHelper;
 import com.google.android.gms.iid.InstanceIDListenerService;
 
 /**
@@ -9,7 +10,7 @@ import com.google.android.gms.iid.InstanceIDListenerService;
  */
 public class MyInstanceIdListenerService extends InstanceIDListenerService {
 
-  private static final String TAG = "MyInstanceIDLS";
+  private static final String TAG = "MyInstanceIdLS";
 
   /**
    * Called if InstanceID token is updated. This may occur if the security of the previous token
@@ -17,8 +18,9 @@ public class MyInstanceIdListenerService extends InstanceIDListenerService {
    */
   @Override
   public void onTokenRefresh() {
-    Intent intent = new Intent(this, RegistrationIntentService.class);
-    Log.i(TAG, "Registration-ID was refreshed");
-    startService(intent);
+    Intent registrationIntentService = new Intent(this, RegistrationIntentService.class);
+    registrationIntentService.putExtra(PreferencesHelper.TOKEN_REFRESH, true);
+    Log.i(TAG, "Registration-ID needs to be refreshed");
+    startService(registrationIntentService);
   }
 }

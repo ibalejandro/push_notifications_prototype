@@ -31,20 +31,27 @@ public class RegistrationIntentService extends IntentService {
   }
 
   /**
-   * Tries to get a Registration-ID from GCM.
+   * Tries to get a (new or updated) Registration-ID from GCM.
    */
   @Override
   protected void onHandleIntent(Intent intent) {
     try {
       InstanceID instanceID = InstanceID.getInstance(this);
       String registrationId = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
-          GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+        GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
       Log.i(TAG, "GCM Registration-ID: " + registrationId);
       User user = createUser(registrationId);
-      sendRegistrationIdToServer(user);
+      if (!intent.getExtras().getBoolean(PreferencesHelper.TOKEN_REFRESH)) {
+        // It's a normal Registration-ID.
+        sendRegistrationIdToServer(PreferencesHelper.SEND_REG_ID_URL, user);
+      }
+      else {
+        // It's a refreshed Registration-ID.
+        sendRegistrationIdToServer(PreferencesHelper.UPDATE_REG_ID_URL, user);
+      }
     }
     catch (IOException e) {
-      setSharedPreferences(this, false);
+      setSharedPreferences(this, false, null);
       Log.d(TAG, "Failed getting Registration-ID");
       e.printStackTrace();
       notifyResultToIntentServicesReceiver(this);
@@ -59,17 +66,17 @@ public class RegistrationIntentService extends IntentService {
   }
 
   /**
-   * Creates the request to send the Registration-ID to the server.
+   * Creates the request to send the Registration-ID (refreshed or not) to the server.
    */
-  public void sendRegistrationIdToServer(User user) {
-    JSONObject params = createParams(PreferencesHelper.SEND_REG_ID_URL, user);
-    if (params != null) {
-      HttpRequestsClient httpReqManager = new HttpRequestsClient(Request.Method.POST,
-        PreferencesHelper.SEND_REG_ID_URL, params, this);
+  public void sendRegistrationIdToServer(String service, User user) {
+    JSONObject params = createParams(service, user);
+    if (!params.isNull(PreferencesHelper.REGISTRATION_ID)) {
+      HttpRequestsClient httpReqManager = new HttpRequestsClient(Request.Method.POST, service,
+        params, this);
       httpReqManager.sendRegistrationIdToServer();
     }
     else {
-      setSharedPreferences(this, false);
+      setSharedPreferences(this, false, null);
       notifyResultToIntentServicesReceiver(this);
     }
   }
@@ -82,9 +89,11 @@ public class RegistrationIntentService extends IntentService {
     try {
       switch (url) {
         case PreferencesHelper.SEND_REG_ID_URL:
+        case PreferencesHelper.UPDATE_REG_ID_URL:
           User user = (User) object;
-          params.put("name", user.getName());
-          params.put("registrationId", user.getRegistrationId());
+          params.put(PreferencesHelper.ID, PreferencesHelper.USER_ID);
+          params.put(PreferencesHelper.NAME, user.getName());
+          params.put(PreferencesHelper.REGISTRATION_ID, user.getRegistrationId());
           break;
         default:
       }
@@ -99,9 +108,12 @@ public class RegistrationIntentService extends IntentService {
   /**
    * Set the variables' values in the Preferences according to the IntentService's result.
    */
-  public static void setSharedPreferences(Context context, boolean isResultSuccessful) {
+  public static void setSharedPreferences(Context context, boolean isResultSuccessful,
+    String userId) {
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     if (isResultSuccessful) {
+      sharedPreferences.edit().putString(PreferencesHelper.USER_ID, userId).apply();
+      Log.i(TAG, "Saved User-ID: " + PreferencesHelper.USER_ID);
       sharedPreferences.edit().putBoolean(PreferencesHelper.SENT_TOKEN_TO_SERVER, true).apply();
     }
     else {
