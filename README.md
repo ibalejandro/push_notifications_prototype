@@ -1,7 +1,7 @@
 # push_notifications_prototype
 A proof of concept for Android Push Notifications.
 
-This app allows a user to register its device for receiving push notifications. When a notification is sent from an app server, this app handles the receipt of the Google Cloud Messaging (GCM) message and shows the respective notification to the user, allowing him to see its content in a separate activity.
+This app allows a user to register its device for receiving push notifications. When a notification is sent from an app server, this app handles the receipt of the Google Cloud Messaging (GCM) message and shows the respective notification to the user, allowing him to see its content in a separate activity. When the Registration-ID of an user has been refreshed, this app also triggers the Updating service to save the corresponding changes.
 
 ### Instructions
 * Download this project and the [push_notifications_prototype_server][push_notif_proto_server].
