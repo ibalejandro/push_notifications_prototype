@@ -68,12 +68,12 @@ public class RegistrationIntentService extends IntentService {
   /**
    * Creates the request to send the Registration-ID (refreshed or not) to the server.
    */
-  public void sendRegistrationIdToServer(String service, User user) {
-    JSONObject params = createParams(service, user);
+  public void sendRegistrationIdToServer(String serviceUrl, User user) {
+    JSONObject params = createParams(serviceUrl, user);
     if (!params.isNull(PreferencesHelper.REGISTRATION_ID)) {
-      HttpRequestsClient httpReqManager = new HttpRequestsClient(Request.Method.POST, service,
+      HttpRequestsClient httpReqClient = new HttpRequestsClient(Request.Method.POST, serviceUrl,
         params, this);
-      httpReqManager.sendRegistrationIdToServer();
+      httpReqClient.sendRegistrationIdToServer();
     }
     else {
       setSharedPreferences(this, false, null);
@@ -84,14 +84,17 @@ public class RegistrationIntentService extends IntentService {
   /**
    * Creates parameters as a JSONObject for every particular request.
    */
-  public JSONObject createParams(String url, Object object) {
+  public JSONObject createParams(String serviceUrl, Object object) {
     JSONObject params = new JSONObject();
     try {
-      switch (url) {
+      switch (serviceUrl) {
         case PreferencesHelper.SEND_REG_ID_URL:
         case PreferencesHelper.UPDATE_REG_ID_URL:
           User user = (User) object;
-          params.put(PreferencesHelper.ID, PreferencesHelper.USER_ID);
+          SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences
+            (getApplicationContext());
+          params.put(PreferencesHelper.ID, sharedPreferences.getString(PreferencesHelper.USER_ID,
+            null));
           params.put(PreferencesHelper.NAME, user.getName());
           params.put(PreferencesHelper.REGISTRATION_ID, user.getRegistrationId());
           break;
@@ -113,7 +116,6 @@ public class RegistrationIntentService extends IntentService {
     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     if (isResultSuccessful) {
       sharedPreferences.edit().putString(PreferencesHelper.USER_ID, userId).apply();
-      Log.i(TAG, "Saved User-ID: " + PreferencesHelper.USER_ID);
       sharedPreferences.edit().putBoolean(PreferencesHelper.SENT_TOKEN_TO_SERVER, true).apply();
     }
     else {

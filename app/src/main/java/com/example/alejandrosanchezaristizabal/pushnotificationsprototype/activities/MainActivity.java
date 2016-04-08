@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
           Toast.makeText(getApplicationContext(), "Your device was successfully registered",
             Toast.LENGTH_SHORT).show();
           Log.i(TAG, "Registration-ID successfully sent to the server");
+          Log.i(TAG, "Saved User-ID: " + sharedPreferences.getString(PreferencesHelper.USER_ID,
+            null));
         }
         else {
           Toast.makeText(getApplicationContext(), "Failed registering your device",

@@ -13,7 +13,7 @@ public class PreferencesHelper {
   public static final String REGISTRATION_ID = "registrationId";
   public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
   public static final String TOKEN_REFRESH = "tokenRefresh";
-  public static String USER_ID = null;
+  public static final String USER_ID = "userId";
   public static final String USER_NAME = "VW User";
 
   public static final String IP_ADDRESS = "192.168.1.158";
