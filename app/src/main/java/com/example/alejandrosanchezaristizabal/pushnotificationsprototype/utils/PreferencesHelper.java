@@ -19,9 +19,9 @@ public class PreferencesHelper {
   // Network attributes.
   public static final String IP_ADDRESS = "YOUR_IP_ADDRESS";
   public static final String PORT = "8080";
-  public static final String SERVER_LOC = "http://" + IP_ADDRESS + ":" + PORT;
+  public static final String SERVER_HOST = "http://" + IP_ADDRESS + ":" + PORT;
 
   // Services' URLs.
-  public static final String SEND_REG_ID_URL = SERVER_LOC + "/register";
-  public static final String UPDATE_REG_ID_URL = SERVER_LOC + "/updateRegistrationId";
+  public static final String SEND_REG_ID_URL = SERVER_HOST + "/register";
+  public static final String UPDATE_REG_ID_URL = SERVER_HOST + "/updateRegistrationId";
 }
