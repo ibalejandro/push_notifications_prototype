@@ -20,7 +20,7 @@ This app allows a user to register its device for receiving push notifications. 
 
 ### References
 * [GCM Client App for Android] - Set up a GCM Client App on Android (Visited on March 2016).
-* [GCM Quickstart] - Google samples/Google Services/Android/Gcmquickstart (Visited on March 2016).
+* [GCM Quickstart] - Google Cloud Messaging Quickstart (Visited on March 2016).
 * [Android Volley Tutorial] - Android Volley Tutorial – Making HTTP GET, POST, PUT (Visited on April 2016).
 * [Transmitting Network Data] - Transmitting Network Data Using Volley (Visited on April 2016).
 
@@ -28,6 +28,6 @@ This app allows a user to register its device for receiving push notifications. 
 [//]: # (These are reference links used in the body of this note)
    [push_notif_proto_server]: <https://github.com/ibalejandro/push_notifications_prototype_server>
    [GCM Client App for Android]: <https://developers.google.com/cloud-messaging/android/client#sample-register>
-   [GCM Quickstart]: <https://github.com/googlesamples/google-services/blob/master/android/gcm/app/src/main/java/gcm/play/android/samples/com/gcmquickstart>
+   [GCM Quickstart]: <https://github.com/googlesamples/google-services/tree/master/android/gcm>
    [Android Volley Tutorial]: <http://www.itsalif.info/content/android-volley-tutorial-http-get-post-put>
    [Transmitting Network Data]: <http://developer.android.com/intl/es/training/volley/index.html>
