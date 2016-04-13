@@ -5,7 +5,9 @@ This app allows a user to register its device for receiving push notifications. 
 
 ### Instructions
 * Download this project and the [push_notifications_prototype_server][push_notif_proto_server].
+
 * Import both projects into the corresponding IDEs.
+
 * In this project, set the value of the constant String IP_ADDRESS (under ${PROJECT_HOME}/app/src/main/java/<package>/utils/PreferencesHelper.java) with your IP-address. Something like:
 
     ```sh
@@ -18,6 +20,12 @@ This app allows a user to register its device for receiving push notifications. 
     ```
 * Run the [push_notifications_prototype_server][push_notif_proto_server] you downloaded and make sure that it starts successfully before you run this Android app.
 
+> For the purpose of this prototype, the [push_notifications_prototype_server][push_notif_proto_server] is supposed to run on a local machine (localhost). However, if your Server is running in the Cloud, you can just set the value of the constant String SERVER_HOST (under ${PROJECT_HOME}/app/src/main/java/<package>/utils/PreferencesHelper.java) with the URL where your Server is hosted . Something like:
+
+    ```sh
+    public static final String SERVER_HOST = "www.myhost.com".
+    ```
+    
 ### References
 * [GCM Client App for Android] - Set up a GCM Client App on Android (Visited on March 2016).
 * [GCM Quickstart] - Google Cloud Messaging Quickstart (Visited on March 2016).
