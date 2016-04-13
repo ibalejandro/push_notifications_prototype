@@ -16,9 +16,12 @@ public class PreferencesHelper {
   public static final String USER_ID = "userId";
   public static final String USER_NAME = "VW User";
 
-  public static final String IP_ADDRESS = "192.168.1.158";
+  // Network attributes.
+  public static final String IP_ADDRESS = "YOUR_IP_ADDRESS";
   public static final String PORT = "8080";
-  public static final String SEND_REG_ID_URL = "http://" + IP_ADDRESS + ":" + PORT + "/register";
-  public static final String UPDATE_REG_ID_URL = "http://" + IP_ADDRESS + ":" + PORT
-    + "/updateRegistrationId";
+  public static final String SERVER_LOC = "http://" + IP_ADDRESS + ":" + PORT;
+
+  // Services' URLs.
+  public static final String SEND_REG_ID_URL = SERVER_LOC + "/register";
+  public static final String UPDATE_REG_ID_URL = SERVER_LOC + "/updateRegistrationId";
 }

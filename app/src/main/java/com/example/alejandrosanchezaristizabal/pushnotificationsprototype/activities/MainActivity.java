@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
       .show();
     if (arePlayServicesAvailable()) {
       Intent registrationIntentService = new Intent(this, RegistrationIntentService.class);
-      // It's the first attempt to register the user. Not a
+      // It's the first attempt to register the user. Not an update of the Registration-ID.
       registrationIntentService.putExtra(PreferencesHelper.TOKEN_REFRESH, false);
       startService(registrationIntentService);
     }
