@@ -25,7 +25,7 @@ This app allows a user to register its device for receiving push notifications. 
     public static final String SERVER_HOST = "www.myhost.com".
     ```
  
- * Run the [push_notifications_prototype_server][push_notif_proto_server] you downloaded and make sure that it starts successfully before you run this Android app.
+* Run the [push_notifications_prototype_server][push_notif_proto_server] you downloaded and make sure that it starts successfully before you run this Android app.
  
 ### References
 * [GCM Client App for Android] - Set up a GCM Client App on Android (Visited on March 2016).
