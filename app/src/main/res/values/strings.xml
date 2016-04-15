@@ -1,4 +1,8 @@
 <resources>
   <string name="app_name">PushNotificationsPrototype</string>
   <string name="action_settings">Settings</string>
+  <string name="label.notification_title">Title</string>
+  <string name="label.notification_body">Body</string>
+  <string name="message.registering_device">Registering your device...</string>
+  <string name="message.press_to_register">Press the button to register your device.</string>
 </resources>

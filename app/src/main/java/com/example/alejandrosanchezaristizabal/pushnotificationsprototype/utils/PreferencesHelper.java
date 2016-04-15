@@ -15,6 +15,7 @@ public class PreferencesHelper {
   public static final String TOKEN_REFRESH = "tokenRefresh";
   public static final String USER_ID = "userId";
   public static final String USER_NAME = "VW User";
+  public static final long[] VIBRATE_PATTERN = {0, 250, 150, 250};
 
   // Network attributes.
   public static final String IP_ADDRESS = "YOUR_IP_ADDRESS";

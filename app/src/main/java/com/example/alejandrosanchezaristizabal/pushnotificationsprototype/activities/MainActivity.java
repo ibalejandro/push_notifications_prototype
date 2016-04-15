@@ -42,16 +42,15 @@ public class MainActivity extends AppCompatActivity {
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
+        Snackbar.make(view, getString(R.string.message_registering_device), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+        startRegistrationIntentService();
       }
     });
 
     createIntentServicesReceiver();
 
     registerIntentServicesReceiver();
-
-    startRegistrationIntentService();
   }
 
   /**
@@ -68,14 +67,14 @@ public class MainActivity extends AppCompatActivity {
           .getBoolean(PreferencesHelper.SENT_TOKEN_TO_SERVER, false);
         if (sentRegistrationId) {
           Toast.makeText(getApplicationContext(), "Your device was successfully registered",
-            Toast.LENGTH_SHORT).show();
+                         Toast.LENGTH_SHORT).show();
           Log.i(TAG, "Registration-ID successfully sent to the server");
           Log.i(TAG, "Saved User-ID: " + sharedPreferences.getString(PreferencesHelper.USER_ID,
-            null));
+                null));
         }
         else {
           Toast.makeText(getApplicationContext(), "Failed registering your device",
-            Toast.LENGTH_SHORT).show();
+                         Toast.LENGTH_SHORT).show();
           Log.i(TAG, "Failed sending Registration-ID to the server");
         }
       }
@@ -87,8 +86,9 @@ public class MainActivity extends AppCompatActivity {
    */
   private void registerIntentServicesReceiver() {
     if (!isIntentServicesReceiverRegistered) {
-      LocalBroadcastManager.getInstance(this).registerReceiver(intentServicesReceiver,
-        new IntentFilter(PreferencesHelper.REGISTRATION_COMPLETE));
+      LocalBroadcastManager.getInstance(this)
+        .registerReceiver(intentServicesReceiver,
+                          new IntentFilter(PreferencesHelper.REGISTRATION_COMPLETE));
       isIntentServicesReceiverRegistered = true;
     }
   }
@@ -97,8 +97,6 @@ public class MainActivity extends AppCompatActivity {
    * Starts the IntentService to get a Registration-ID from GCM.
    */
   public void startRegistrationIntentService() {
-    Toast.makeText(getApplicationContext(), "Registering your device", Toast.LENGTH_SHORT)
-      .show();
     if (arePlayServicesAvailable()) {
       Intent registrationIntentService = new Intent(this, RegistrationIntentService.class);
       // It's the first attempt to register the user. Not an update of the Registration-ID.
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
       }
       else {
         Toast.makeText(getApplicationContext(), "Sorry, this device is not supported",
-          Toast.LENGTH_SHORT).show();
+                       Toast.LENGTH_SHORT).show();
         Log.i(TAG, "This device is not supported");
         finish();
       }

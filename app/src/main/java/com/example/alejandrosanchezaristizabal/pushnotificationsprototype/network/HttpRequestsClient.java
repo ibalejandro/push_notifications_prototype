@@ -1,7 +1,13 @@
 package com.example.alejandrosanchezaristizabal.pushnotificationsprototype.network;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -68,6 +74,33 @@ public class HttpRequestsClient {
    * Accesses the RequestQueue through the singleton class and adds the current request.
    */
   public void addRequestToQueue(Request request) {
-    RequestQueueSingletonHelper.getInstance(context).addToRequestQueue(request);
+    if (isNetworkAvailable()) {
+      RequestQueueSingletonHelper.getInstance(context).addToRequestQueue(request);
+    }
+    else {
+      showInternetUnavailabilityMessage(context);
+      Log.i(TAG, "Not available Internet connection");
+    }
+  }
+
+  /**
+   * Checks if there is an available Internet connection in order to execute the request.
+   */
+  private boolean isNetworkAvailable() {
+    ConnectivityManager connectivityManager = (ConnectivityManager) context
+      .getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+  }
+
+  public static void showInternetUnavailabilityMessage(final Context context) {
+    Handler mainThread = new Handler(Looper.getMainLooper());
+    mainThread.post(new Runnable() {
+      @Override
+      public void run() {
+        Toast.makeText(context, "You need to be connected to the Internet", Toast.LENGTH_SHORT)
+          .show();
+      }
+    });
   }
 }
